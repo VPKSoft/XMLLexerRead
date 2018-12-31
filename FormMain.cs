@@ -44,6 +44,7 @@ namespace XMLLexerRead
         {
             tbScintillaRead.Clear();
 
+
             tbScintillaRead.Text +=
                 "scintilla.StyleResetDefault();" + Environment.NewLine +
                 "scintilla.Styles[Style.Default].Font = \"Consolas\";" + Environment.NewLine +
@@ -52,6 +53,14 @@ namespace XMLLexerRead
 
             ComboBox comboBox = (ComboBox)sender;
             string item = comboBox.SelectedItem.ToString();
+
+            List < Color > colorsColors = new List<Color>(new Color[] { });
+
+            string colorArrayName = $"{item}Colors";
+            string colorsCs = $"List<Color> {colorArrayName} = new List<Color>(new Color[]{Environment.NewLine}" +  " { " + Environment.NewLine;
+
+            int colorIndex = 0;
+
             var nodes = document.Descendants("LexerType").Where(f => f.Attribute("name").Value == item);
             foreach (var node in nodes)
             {
@@ -68,12 +77,21 @@ namespace XMLLexerRead
                         fontStyle = element.Attribute("fontStyle").Value;
                     }
 
+
+                    colorsCs +=
+                        $"Color.FromArgb({colorForeground.R}, {colorForeground.G}, {colorForeground.B}), // {fgColor} " + Environment.NewLine +
+                        $"Color.FromArgb({colorBackground.R}, {colorBackground.G}, {colorBackground.B}), // {fgColor} " + Environment.NewLine;
+
                     tbScintillaRead.Text +=
                         $"// {element.Attribute("name").Value}, fontStyle = {fontStyle} " + Environment.NewLine +
-                    $"scintilla.Styles[{item}.{element.Attribute("name").Value}].ForeColor = Color.FromArgb({colorForeground.R}, {colorForeground.G}, {colorForeground.B}); // {fgColor} " + Environment.NewLine +
-                    $"scintilla.Styles[{item}.{element.Attribute("name").Value}].BackColor = Color.FromArgb({colorBackground.R}, {colorBackground.G}, {colorBackground.B}); // {bgColor} " + Environment.NewLine + Environment.NewLine;
+                    $"scintilla.Styles[{item}.{element.Attribute("name").Value}].ForeColor = {colorArrayName}[{colorIndex++}];" + Environment.NewLine +
+                    $"scintilla.Styles[{item}.{element.Attribute("name").Value}].BackColor = {colorArrayName}[{colorIndex++}];" + Environment.NewLine;
                 }
             }
+            colorsCs += "});" + Environment.NewLine + Environment.NewLine;
+
+            tbScintillaRead.Text = colorsCs + tbScintillaRead.Text;
+
             tbScintillaRead.Text += "scintilla.Lexer = Lexer." + item + ";" + Environment.NewLine + Environment.NewLine;
 
             nodes = documentModel.Descendants("Language").Where(f => f.Attribute("name").Value == item);
