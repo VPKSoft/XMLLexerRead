@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("XMLLexerRead")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A code generator to create a lexer for the ScintillaNET from the famous Notepad++'s language definition files.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("VPKSoft")]
 [assembly: AssemblyProduct("XMLLexerRead")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: AssemblyCopyright("Copyright © VPKSoft 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
