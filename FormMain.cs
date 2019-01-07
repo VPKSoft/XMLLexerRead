@@ -82,8 +82,15 @@ namespace XMLLexerRead
                         $"Color.FromArgb({colorForeground.R}, {colorForeground.G}, {colorForeground.B}), // {fgColor} " + Environment.NewLine +
                         $"Color.FromArgb({colorBackground.R}, {colorBackground.G}, {colorBackground.B}), // {fgColor} " + Environment.NewLine;
 
+                    string styleId = string.Empty;
+
+                    if (element.Attribute("styleID") != null)
+                    {
+                        styleId = ", styleId = " + element.Attribute("styleID").Value;
+                    }
+
                     tbScintillaRead.Text +=
-                        $"// {element.Attribute("name").Value}, fontStyle = {fontStyle} " + Environment.NewLine +
+                        $"// {element.Attribute("name").Value}, fontStyle = {fontStyle}" + styleId + Environment.NewLine +
                     $"scintilla.Styles[{item}.{element.Attribute("name").Value}].ForeColor = {colorArrayName}[{colorIndex++}];" + Environment.NewLine +
                     $"scintilla.Styles[{item}.{element.Attribute("name").Value}].BackColor = {colorArrayName}[{colorIndex++}];" + Environment.NewLine;
                 }
