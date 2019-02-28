@@ -89,10 +89,36 @@ namespace XMLLexerRead
                         styleId = ", styleId = " + element.Attribute("styleID").Value;
                     }
 
+                    // fontstyle = 1 --> bold
+                    // fontstyle = 2 --> italic
+
+                    int fontStyleId = 0;
+                    string fontStyleIdString = string.Empty;
+                    try
+                    {
+                        fontStyleId = int.Parse(fontStyle);
+                        if (fontStyleId == 1)
+                        {
+                            fontStyleIdString =
+                                $"scintilla.Styles[{item}.{element.Attribute("name").Value}].Bold = true;" + Environment.NewLine;
+                        }
+                        else if (fontStyleId == 2)
+                        {
+                            fontStyleIdString =
+                                $"scintilla.Styles[{item}.{element.Attribute("name").Value}].Italic = true;" + Environment.NewLine;
+                        }
+                    }
+                    catch
+                    {
+                        // nothing to do here..
+                    }
+
                     tbScintillaRead.Text +=
                         $"// {element.Attribute("name").Value}, fontStyle = {fontStyle}" + styleId + Environment.NewLine +
+                        fontStyleIdString +
                     $"scintilla.Styles[{item}.{element.Attribute("name").Value}].ForeColor = {colorArrayName}[{colorIndex++}];" + Environment.NewLine +
-                    $"scintilla.Styles[{item}.{element.Attribute("name").Value}].BackColor = {colorArrayName}[{colorIndex++}];" + Environment.NewLine;
+                    $"scintilla.Styles[{item}.{element.Attribute("name").Value}].BackColor = {colorArrayName}[{colorIndex++}];" + Environment.NewLine +
+                    Environment.NewLine;
                 }
             }
             colorsCs += "});" + Environment.NewLine + Environment.NewLine;
