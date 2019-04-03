@@ -44,7 +44,6 @@ namespace XMLLexerRead
         {
             tbScintillaRead.Clear();
 
-
             tbScintillaRead.Text +=
                 "scintilla.StyleResetDefault();" + Environment.NewLine +
                 "scintilla.Styles[Style.Default].Font = \"Consolas\";" + Environment.NewLine +
@@ -57,7 +56,7 @@ namespace XMLLexerRead
             List < Color > colorsColors = new List<Color>(new Color[] { });
 
             string colorArrayName = $"{item}Colors";
-            string colorsCs = $"List<Color> {colorArrayName} = new List<Color>(new Color[]{Environment.NewLine}" +  " { " + Environment.NewLine;
+            string colorsCs = $"List<Tuple<Color, string, bool>> {colorArrayName} = new List<Tuple<Color, string, bool>>(new Tuple<Color, string, bool>[] {Environment.NewLine}" +  " { " + Environment.NewLine;
 
             int colorIndex = 0;
 
@@ -79,8 +78,8 @@ namespace XMLLexerRead
 
 
                     colorsCs +=
-                        $"Color.FromArgb({colorForeground.R}, {colorForeground.G}, {colorForeground.B}), // {fgColor} " + Environment.NewLine +
-                        $"Color.FromArgb({colorBackground.R}, {colorBackground.G}, {colorBackground.B}), // {fgColor} " + Environment.NewLine;
+                        $"Tuple.Create(Color.FromArgb({colorForeground.R}, {colorForeground.G}, {colorForeground.B}), \"{element.Attribute("name").Value}\", {true.ToString().ToLower()}), // {fgColor} " + Environment.NewLine +
+                        $"Tuple.Create(Color.FromArgb({colorBackground.R}, {colorBackground.G}, {colorBackground.B}), \"{element.Attribute("name").Value}\", {false.ToString().ToLower()}), // {bgColor} " + Environment.NewLine;
 
                     string styleId = string.Empty;
 
